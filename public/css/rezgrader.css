@@ -1,0 +1,45 @@
+#submitResume{
+	width: 200px;
+	height: 200px;
+	border: 2px solid;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -100px;
+}
+
+#buttonText{
+	margin-top: 70px;
+}
+
+#form{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: 130px;
+	margin-left: -110px;
+}
+
+#formRegister{
+	position: absolute;
+	top: 40%;
+	left: 40%;
+}
+
+#yourScore{
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	margin-top: -10px;
+	margin-left: -105px;
+}
+
+#upload{
+	position: absolute;
+	top: 42%;
+	left: 40%;
+}
+body{
+	background-color;
+}

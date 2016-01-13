@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>RezGrader</title>
+  <meta name="description" content="RezGradr">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="css/rezgrader.css">
+  <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+
+<div id="upload">
+    <form method='post' action='/upload' id="file-form" enctype='multipart/form-data'>
+     <!--specifying multiple allows them to upload multiple files!!! -->
+      <input type="file" id="file-select" name='resume'/>
+      <button type="submit" id="upload-button">Upload</button>
+    </form>
+    
+</div>
+
+<script type="text/javascript">
+    var ref = new Firebase('https://rezgrader.firebaseIO.com/');
+    $(function(){
+        
+        $('#file-form').submit(function(event){
+            //Remember to read these files after the submit event happens!! 
+            var fileInput = document.getElementById('file-select').files;
+            var file = fileInput.item(0);
+
+            //does not let the post request go through if there is no file selected
+            if(document.getElementById("file-select").value == "") {
+               alert('Please submit a file!');
+               return false;
+            }
+            
+            $('#upload-button').html('Uploading...');
+            
+            //Checking if the file uploaded is a pdf file
+            if(file.name.indexOf('.pdf') < 0){
+                alert('File must be pdf!');
+                $('#upload-button').html('Upload');
+                //prevents default action of form submitting so we can perform an ajax call
+                event.preventDefault();
+                //If it's not a PDF file don't submit the form!
+                //get out of this event if the file is not a pdf 
+                return;
+            }
+            
+            //nuke database whenever we upload a new file
+            ref.remove();
+        
+            
+            /*
+                So the problem with ajax not being able to send the file to the server due to problems with formData was solved by specifying a post method instead in the html form and handling the method with the node.js multer middleware. Sigh, I still wish I could figure out how to send the file directly to my server using ajaxs
+            */
+            
+//holy crap get(), has() and all the other methods aren't supported in any of the browsers            
+//            //adding the file to our formData object
+//            if(formData.has('myResume')){
+//                formData.set('myResume', file);
+//            } else{
+//                formData.append('myResume', file);
+//            }            
+            
+//            $.ajax({
+//                type: 'POST',
+//                url: '/upload', 
+//                data: {
+//                    file: file
+//                },
+//                processData: false,
+//                success: function(data){
+//                    console.log('Ajax function finished!');
+//                }
+//            })
+            
+           // $.post('/upload', {file: file});
+
+            //$.post('/upload', {file: $('#file-select').serialize()});
+        });
+    })
+</script>
+
+</body>
+</html>
