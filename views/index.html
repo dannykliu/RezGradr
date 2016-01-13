@@ -20,8 +20,12 @@
      <!--specifying multiple allows them to upload multiple files!!! -->
       <input type="file" id="file-select" name='resume'/>
       <button type="submit" id="upload-button">Upload</button>
+      <br>
     </form>
-    
+    <br>
+    <form method='get' action='/lastResume'>
+        <button type="submit"><font size='3'>View last resume</font></button>
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -36,6 +40,7 @@
             //does not let the post request go through if there is no file selected
             if(document.getElementById("file-select").value == "") {
                alert('Please submit a file!');
+                //return false blocks post request from submitting
                return false;
             }
             
@@ -58,32 +63,35 @@
             
             /*
                 So the problem with ajax not being able to send the file to the server due to problems with formData was solved by specifying a post method instead in the html form and handling the method with the node.js multer middleware. Sigh, I still wish I could figure out how to send the file directly to my server using ajaxs
-            */
             
-//holy crap get(), has() and all the other methods aren't supported in any of the browsers            
-//            //adding the file to our formData object
-//            if(formData.has('myResume')){
-//                formData.set('myResume', file);
-//            } else{
-//                formData.append('myResume', file);
-//            }            
             
-//            $.ajax({
-//                type: 'POST',
-//                url: '/upload', 
-//                data: {
-//                    file: file
-//                },
-//                processData: false,
-//                success: function(data){
-//                    console.log('Ajax function finished!');
-//                }
-//            })
+holy crap get(), has() and all the other methods aren't supported in any of the browsers            
+            //adding the file to our formData object
+            if(formData.has('myResume')){
+                formData.set('myResume', file);
+            } else{
+                formData.append('myResume', file);
+            }            
             
-           // $.post('/upload', {file: file});
+            $.ajax({
+                type: 'POST',
+                url: '/upload', 
+                data: {
+                    file: file
+                },
+                processData: false,
+                success: function(data){
+                    console.log('Ajax function finished!');
+                }
+            })
+            
+            $.post('/upload', {file: file});
 
-            //$.post('/upload', {file: $('#file-select').serialize()});
+            $.post('/upload', {file: $('#file-select').serialize()});
+            */
         });
+        
+        
     })
 </script>
 

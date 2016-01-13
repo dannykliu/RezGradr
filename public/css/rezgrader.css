@@ -40,6 +40,10 @@
 	top: 42%;
 	left: 40%;
 }
+
+#lastResume :hover{
+    cursor: pointer;
+}
 body{
 	background-color;
 }

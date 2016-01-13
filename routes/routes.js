@@ -1,5 +1,5 @@
 'use strict'
-module.exports = function(express, app, multer){
+module.exports = function(express, app, multer, fs){
     
     //Configure some routes 
     let router = express.Router();
@@ -23,6 +23,7 @@ module.exports = function(express, app, multer){
 //              }
 //            })
 //        })
+    
     router.post('/upload', multer({storage: multer.diskStorage({
               destination: function (req, file, cb) {
                 cb(null, './public/resumes')
@@ -32,13 +33,19 @@ module.exports = function(express, app, multer){
               }
             })
         }).single('resume'), function(req, res){
-                console.log(req.file);
-                console.log(req.file.originalname);
+//                console.log(req.file);
+//                console.log(req.file.originalname);
                 //instead of using sessions to keep track of the variable, I cheated and used a queryString
                 //this works because the data we want to send is a string, but if it's an object, we would have to use sessions instead
                 //res.render('rating', {name: req.file.filename});
                 res.redirect('rating?name=' + req.file.filename);
     })
     
-    app.use('/', router)  
+    router.get('/lastResume', function(req, res){
+        let arr = fs.readdirSync('./public/resumes');
+        console.log(arr);
+        res.redirect('rating?name=' + arr[arr.length-1]);
+    })
+    
+    app.use('/', router);  
 }

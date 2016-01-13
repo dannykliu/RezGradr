@@ -4,7 +4,8 @@ let path = require('path');
 let config = require('./config/config.js');
 let bodyParser = require('body-parser');
 let multer = require('multer');
-    
+let fs = require('fs');
+
 let app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -20,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3000);
 app.set('host', config.host);
 
-require('./routes/routes.js')(express, app, multer);
+require('./routes/routes.js')(express, app, multer, fs);
 
 let server = require('http').createServer(app);
  
